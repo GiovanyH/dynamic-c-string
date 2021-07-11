@@ -46,6 +46,7 @@ void dynamic_string_add(char* chars, int index, dynamic_string* str) {
 	}
 
 	str->len+=len_str(chars);
+	str->chars[str->len] = '\0';
 }
 
 void dynamic_string_rem(int l_selection, int r_selection, dynamic_string* str) {
@@ -56,4 +57,5 @@ void dynamic_string_rem(int l_selection, int r_selection, dynamic_string* str) {
 	}
 
 	str->chars[str->len-selection_size] = '\0';
+	str->len = len_str(str->chars);
 }
