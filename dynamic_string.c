@@ -36,7 +36,7 @@ void dynamic_string_move(int l_selection, int r_selection, int to, dynamic_strin
 }
 
 void dynamic_string_add(char* chars, int index, dynamic_string* str) {
-	realloc(str->chars, str->len+len_str(chars)+1);
+	str->chars = (char*)realloc(str->chars, str->len+len_str(chars)+1);
 
 	dynamic_string_move(0, str->len, len_str(chars), str);
 	dynamic_string_move(len_str(chars), index+len_str(chars), 0, str);
