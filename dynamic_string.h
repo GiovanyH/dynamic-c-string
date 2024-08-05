@@ -1,21 +1,64 @@
-#ifndef DSTRING
-#define DSTRING
+#ifndef C_STRING
+#define C_STRING
 
-typedef struct dynamic_string {
-	char* chars;
-	unsigned len;
-} dynamic_string;
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <assert.h>
 
-int len_str(char* str);
+typedef struct {
+    int len;
+    int cap;
+} array_header;
 
-void dynamic_string_init(dynamic_string* str);
+#define new_vector(TYPE, NAME) \
+    TYPE *NAME; \
+    array_header *HEADER; \
+    assert(&NAME != NULL); \
+    HEADER = malloc(sizeof(array_header) + 8); \
+    HEADER->cap = 8; \
+    HEADER->len = 0; \
+    NAME = HEADER+1;
 
-void dynamic_string_move(int l_selection, int r_selection, int to, dynamic_string* str);
+#define vec_get_hdr(SB)      ((array_header *)SB-1)
 
-void dynamic_string_add(char* ch, int index, dynamic_string* str);
+#define vec_get_len(SB)      (SB ? vec_get_hdr(SB)->len : 0)
+#define vec_get_capacity(SB) (SB ? vec_get_hdr(SB)->cap : 0)
 
-void dynamic_string_rem(int l_selection, int r_selection, dynamic_string* str);
+#define vec_push(SB, ELEM)   (vec_append_e(&(SB), 1), (SB)[vec_get_len((SB))-1] = (ELEM))
+#define vec_pop(SB)          (vec_pop_e(&(SB), 1))
 
-#define dynamic_string_append(chars, str) dynamic_string_add(chars, (*str).len, str)
+#define vec_free(SB)         (SB ? free(vec_get_hdr(SB)), 0 : 0)
+
+
+void vec_append_e(void** sb, size_t isz) {
+    array_header* h = vec_get_hdr(*sb);
+    if (h->len + 1 > h->cap) {
+        h->cap *= 2;
+        h = realloc(h, sizeof(array_header) + h->cap * isz);
+        *sb = h + 1;
+    }
+    h->len++;
+}
+
+void vec_pop_e(void** sb, size_t isz) {
+    array_header* h;
+
+    h = vec_get_hdr(*sb);
+    if (h->len - 1 < h->cap - 8) {
+        h->cap -= 8;
+        h = realloc(h, sizeof(array_header) + h->cap * isz);
+        *sb = h + 1;
+    }
+    h->len--;
+}
+
+void append_string(char** sb, char* string) {
+    while (*string != '\0') {
+        vec_push(*sb, *string);
+        string++;
+    }
+    vec_push(*sb, '\0');
+}
 
 #endif
