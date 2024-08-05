@@ -1,19 +1,35 @@
+/*
+ * main.c
+ * Dynamic C String using Stretchy Buffers
+ *
+ * This implementation provides a dynamic string in C using stretchy buffers.
+ * Stretchy buffers automatically resize as elements are added, providing a
+ * convenient way to handle dynamic arrays in C.
+ * Everytime the buffer is full, it doubles the capacity: (h->cap *= 2).
+ *
+ *
+ * License: Unlicense
+ *
+ * Author: GiovanyH
+ * GitHub: https://github.com/GiovanyH
+ */
+
+ /* Example code: */
+
 #include "dynamic_string.h"
-#include <stdio.h>
 
 int main(void) {
-	dynamic_string str1;
-	dynamic_string_init(&str1);
+	new_vector(char, v); // declaring the vector / this is our string
 
-	dynamic_string_append("Hello World!", &str1);
+	// Printing the capacity (no need to do this)
+	printf("string capacity is %d chars\n", vec_get_capacity(v));
 
-	printf("%s\n", str1.chars);
+	// Appending a string
+	append_string(&v, "Hello, World!");
 
-	dynamic_string_add(" saojfosa", 5, &str1);
+	// Printing capacity and string
+	printf("length: %d, capacity: %d\n", vec_get_len(v) - 1, vec_get_capacity(v));
+	printf("string: %s\n", v);
 
-	printf("%s\n", str1.chars);
-
-	dynamic_string_rem(5, 14, &str1);
-
-	printf("%s\n", str1.chars);
+	vec_free(v); // freeing the string
 }
