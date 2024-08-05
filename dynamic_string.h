@@ -18,15 +18,15 @@ typedef struct {
     HEADER = malloc(sizeof(array_header) + 8); \
     HEADER->cap = 8; \
     HEADER->len = 0; \
-    NAME = HEADER+1;
+    NAME = (void*)(HEADER+1);
 
 #define vec_get_hdr(SB)      ((array_header *)SB-1)
 
 #define vec_get_len(SB)      (SB ? vec_get_hdr(SB)->len : 0)
 #define vec_get_capacity(SB) (SB ? vec_get_hdr(SB)->cap : 0)
 
-#define vec_push(SB, ELEM)   (vec_append_e(&(SB), 1), (SB)[vec_get_len((SB))-1] = (ELEM))
-#define vec_pop(SB)          (vec_pop_e(&(SB), 1))
+#define vec_push(SB, ELEM)   (vec_append_e((void**)&(SB), 1), (SB)[vec_get_len((SB))-1] = (ELEM))
+#define vec_pop(SB)          (vec_pop_e((void**)&(SB), 1))
 
 #define vec_free(SB)         (SB ? free(vec_get_hdr(SB)), 0 : 0)
 
