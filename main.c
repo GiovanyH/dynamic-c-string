@@ -19,17 +19,11 @@
 #include "dynamic_string.h"
 
 int main(void) {
-	new_vector(char, v); // declaring the vector / this is our string
+	char* string = string_new("Hello, World!");
 
-	// Printing the capacity (no need to do this)
-	printf("string capacity is %d chars\n", vec_get_capacity(v));
+	append_string(&string, "Teste");
 
-	// Appending a string
-	append_string(&v, "Hello, World!");
+	printf("string: %s\n", string);
 
-	// Printing capacity and string
-	printf("length: %d, capacity: %d\n", vec_get_len(v) - 1, vec_get_capacity(v));
-	printf("string: %s\n", v);
-
-	vec_free(v); // freeing the string
+	free(vec_get_hdr(string));
 }
