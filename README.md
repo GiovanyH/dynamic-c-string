@@ -19,28 +19,18 @@ GitHub: [GiovanyH](https://github.com/GiovanyH)
 Below is an example of how to use the dynamic string implementation:
 
 ```c
-#include <stdio.h>
-#include "dynamic_string.h"
-
 int main(void) {
-    // Declaring the vector (this is our string)
-    new_vector(char, v);
+	char* string = string_new("Hello, World!");
 
-    // Printing the initial capacity (not necessary for functionality)
-    printf("String capacity is %d chars\n", vec_get_capacity(v));
+	append_string(&string, "Teste");
 
-    // Appending a string
-    append_string(&v, "Hello, World!");
+	printf("string: %s\n", string);
 
-    // Printing length, capacity, and the string
-    printf("Length: %d, Capacity: %d\n", vec_get_len(v) - 1, vec_get_capacity(v));
-    printf("String: %s\n", v);
-
-    // Freeing the string
-    vec_free(v);
-
-    return 0;
+	free(vec_get_hdr(string));
 }
+```
+```
+"Hello, World!Teste"
 ```
 
 ### Functions and Macros
